@@ -1,24 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from "react";
+import "./App.css";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Login from "./components/Login";
+import Layout from "./components/container/Layout";
+import route from "./components/router/route";
+
+const routMap = route.map(({ path, Component }, key) => (
+  <Route path={path} element={<Component />} key={key} />
+));
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="h-screen bg-gray-400">
+      <Suspense fallback={"..."}>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            {routMap}
+          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="*"
+            element={
+              <h1 className="text-center text-2xl">Page not found...👎</h1>
+            }
+          />
+        </Routes>
+      </Suspense>
     </div>
   );
 }
